@@ -22,3 +22,57 @@ public class Q9 {
             placeWord(word);
         }
     }
+ // 단어를 배열에 무작위로 배치하는 메소드
+    private void placeWord(String word) {
+        Random random = new Random();
+        boolean placed = false;
+
+        while (!placed) {
+            int direction = random.nextInt(4); // 0: 가로, 1: 세로, 2: 대각선(오른쪽), 3: 대각선(왼쪽)
+            int row = random.nextInt(size);
+            int col = random.nextInt(size);
+
+            switch (direction) {
+                case 0: // 가로
+                    if (col + word.length() <= size) {
+                        if (canPlaceHorizontal(row, col, word)) {
+                            for (int i = 0; i < word.length(); i++) {
+                                board[row][col + i] = word.charAt(i);
+                            }
+                            placed = true;
+                        }
+                    }
+                    break;
+                case 1: // 세로
+                    if (row + word.length() <= size) {
+                        if (canPlaceVertical(row, col, word)) {
+                            for (int i = 0; i < word.length(); i++) {
+                                board[row + i][col] = word.charAt(i);
+                            }
+                            placed = true;
+                        }
+                    }
+                    break;
+                case 2: // 대각선(오른쪽)
+                    if (row + word.length() <= size && col + word.length() <= size) {
+                        if (canPlaceDiagonalRight(row, col, word)) {
+                            for (int i = 0; i < word.length(); i++) {
+                                board[row + i][col + i] = word.charAt(i);
+                            }
+                            placed = true;
+                        }
+                    }
+                    break;
+                case 3: // 대각선(왼쪽)
+                    if (row + word.length() <= size && col - word.length() >= -1) {
+                        if (canPlaceDiagonalLeft(row, col, word)) {
+                            for (int i = 0; i < word.length(); i++) {
+                                board[row + i][col - i] = word.charAt(i);
+                            }
+                            placed = true;
+                        }
+                    }
+                    break;
+            }
+        }
+    }
